@@ -1,0 +1,11 @@
+**/*.tar
+
+**/environment.prod*
+**.env
+# compiled output
+**/dist
+**/tmp
+**/out-tsc
+**/node_modules
+**/.idea
+**/*.log*

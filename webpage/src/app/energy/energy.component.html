@@ -1,0 +1,6 @@
+<div>
+  <p>Generierung: {{generierung ? generierung : 0}}</p>
+  <p>Verbrauch: {{verbrauch}}</p>
+  <p>Bilanz: {{generierung - verbrauch}} ({{generierung - verbrauch > 0 ? "Einspeisung": "Zukauf"}})</p>
+  <button (click)="showEnergyData()">Update Energy Information</button>
+</div>
