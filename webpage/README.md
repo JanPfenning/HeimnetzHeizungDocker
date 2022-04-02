@@ -12,12 +12,15 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ## Deployment
 @Windows
+```bash
 docker build ./webpage -t nginx-webpage --platform linux/arm/v7
 docker save -o webpage-image.tar nginx-webpage
 scp ./webpage-image.tar usr@<piip>:/home/usr
+```
 
 @Pi
+```bash
 sudo mv ~/webpage-image.tar /opt/docker
 docker load -i webpage-image.tar
 docker run --name nginx-webpage -d -p <piport>:80 nginx-webpage
-
+```
