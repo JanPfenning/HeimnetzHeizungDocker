@@ -2,4 +2,8 @@
   <button (click)="forceOn()">Turn On</button>
   <button (click)="turnOnUntilEnergy()">Turn On until too little energy</button>
   <button (click)="forceOff()">Turn Off</button>
+  <div class="statuselement">
+    <p>Heater</p>
+    <span id="deviceStatus" class="dot" [style.background]="deviceStatus<0 ? 'red': (deviceStatus>0?'green':'yellow')"></span>
+  </div>
 </div>

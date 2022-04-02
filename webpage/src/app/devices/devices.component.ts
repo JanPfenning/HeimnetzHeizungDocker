@@ -8,14 +8,20 @@ import {DevicesService} from "./devices.service";
 })
 export class DevicesComponent implements OnInit {
 
-  constructor(readonly service: DevicesService) { }
+  deviceStatus = -1;
+
+  constructor(readonly service: DevicesService) {}
 
   ngOnInit(): void {
+    this.deviceStatus = 0;
+    var intervalId = setInterval(() => {
+      this.getDeviceInfo()
+    }, 36000);
   }
 
   turnOnUntilEnergy() {
     //console.log("subscribing")
-    const subscription = this.service.turnDeviceOnUntilOverproductionLessThan('192.168.178.78', 1000)
+    const subscription = this.service.turnDeviceOnUntilOverproductionLessThan('192.168.178.78', 600)
       .subscribe(data => {
           //console.log(data)
         }, error => {
@@ -23,6 +29,7 @@ export class DevicesComponent implements OnInit {
           //console.log(error)
         }, () => {
           subscription.unsubscribe()
+          this.getDeviceInfo()
         }
       );
   }
@@ -36,6 +43,7 @@ export class DevicesComponent implements OnInit {
           //console.log(error)
         }, () => {
           subscription.unsubscribe()
+          this.getDeviceInfo()
         }
       );
   }
@@ -49,7 +57,21 @@ export class DevicesComponent implements OnInit {
           //console.log(error)
         }, () => {
           subscription.unsubscribe()
+          this.getDeviceInfo()
         }
       );
+  }
+
+  getDeviceInfo(){
+    const subscription = this.service.getInfoOfDeviceWithIp('192.168.178.78')
+      .subscribe(data => {
+          console.log(data);
+            this.deviceStatus = data.device_on ? 1 : -1;
+      }, error => {
+
+      }, () => {
+        subscription.unsubscribe()
+      }
+    )
   }
 }
