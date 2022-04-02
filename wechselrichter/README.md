@@ -20,14 +20,18 @@ Nest is [MIT licensed](LICENSE).
 
 ## Deploy
 @Windows
+```bash
 docker build ./wechselrichter -t nestjs-api --platform linux/arm/v7
 docker save -o nestjs-image.tar nestjs-api
-scp ./nestjs-image.tar pi@192.168.178.87:/home/pi
+scp ./nestjs-image.tar usr@<piip>:/home/usr
+```
 
 @Pi
+```bash
 sudo mv ~/nestjs-image.tar /opt/docker
 docker load -i nestjs-image.tar
-docker run --name nestjs-api -d -p 3001:3000 nestjs-api
+docker run --name nestjs-api -d -p <piport>:3000 nestjs-api
+```
 
 # Further Implementation to be done in the future
 
