@@ -10,7 +10,9 @@ export class DevicesComponent implements OnInit {
 
   deviceStatus = -1;
 
-  constructor(readonly service: DevicesService) {}
+  constructor(readonly service: DevicesService) {
+    this.getDeviceInfo()
+  }
 
   ngOnInit(): void {
     this.deviceStatus = 0;

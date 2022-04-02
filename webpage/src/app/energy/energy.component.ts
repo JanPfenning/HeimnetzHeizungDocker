@@ -11,10 +11,14 @@ export class EnergyComponent implements OnInit {
   verbrauch: number = 0
   generierung: number = 0
 
-  constructor(private readonly service: EnergyService) { }
+  constructor(private readonly service: EnergyService) {
+    this.showEnergyData()
+  }
 
   ngOnInit(): void {
-    this.showEnergyData()
+    var intervalId = setInterval(() => {
+      this.showEnergyData()
+    }, 10000);
   }
 
   showEnergyData(){

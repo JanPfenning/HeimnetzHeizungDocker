@@ -2,5 +2,5 @@
   <p>Generierung: {{(generierung ? generierung/1000 : 0) | number:'1.2-2'}} kWh</p>
   <p>Verbrauch: {{verbrauch/1000 | number:'1.2-2'}} kWh</p>
   <p>Bilanz: {{(generierung - verbrauch)/1000  | number:'1.2-2'}} kWh ({{generierung - verbrauch > 0 ? "Einspeisung": "Zukauf"}})</p>
-  <button (click)="showEnergyData()">Update Energy Information</button>
+  <button (click)="showEnergyData()">Force Update Energy Information Now</button>
 </div>
