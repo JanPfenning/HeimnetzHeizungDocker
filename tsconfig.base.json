@@ -16,7 +16,6 @@
     "target": "es2015",
     "module": "es2020",
     "lib": ["es2018", "dom"],
-    "paths": {},
     "rootDir": "."
   },
   "angularCompilerOptions": {

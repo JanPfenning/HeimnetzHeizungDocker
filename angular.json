@@ -2,6 +2,6 @@
   "version": 2,
   "projects": {
     "api": "apps/api",
-    "app": "apps/app",
+    "app": "apps/app"
   }
 }
