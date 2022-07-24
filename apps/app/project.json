@@ -74,6 +74,13 @@
         "browserTarget": "app:build"
       }
     },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/app/**/*.ts"]
+      }
+    },
     "test": {
       "executor": "@angular-devkit/build-angular:karma",
       "options": {

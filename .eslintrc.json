@@ -1,7 +1,10 @@
 {
   "root": true,
-  "ignorePatterns": ["**/*"],
   "plugins": ["@nrwl/nx"],
+  "env": {
+    "browser": true,
+    "node": true
+  },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
@@ -25,7 +28,8 @@
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nrwl/nx/typescript", "eslint:recommended"],
       "rules": {
-        "no-var": "error"
+        "no-var": "error",
+        "no-unused-vars": "warn"
       }
     }
   ]

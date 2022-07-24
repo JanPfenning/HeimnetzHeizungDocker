@@ -1,90 +1,81 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DevicesService } from './devices.service';
+import { Subject, takeUntil } from "rxjs";
 
 @Component({
   selector: 'app-devices',
   templateUrl: './devices.component.html',
   styleUrls: ['./devices.component.css'],
 })
-export class DevicesComponent implements OnInit {
+export class DevicesComponent implements OnInit, OnDestroy {
   deviceStatus = -1;
 
-  constructor(readonly service: DevicesService) {}
+  private componentLifecycle$ = new Subject();
+  constructor(private readonly service: DevicesService) {}
+
+  ngOnDestroy(): void {
+    this.componentLifecycle$.next(true)
+    this.componentLifecycle$.complete()
+  }
+
 
   ngOnInit(): void {
     this.getDeviceInfo();
     this.deviceStatus = 0;
-    var intervalId = setInterval(() => {
+    setInterval(() => {
       this.getDeviceInfo();
     }, 36000);
   }
 
   turnOnUntilEnergy() {
-    const subscription = this.service
+    this.service
       .turnDeviceOnUntilOverproductionLessThan('192.168.178.78', 600)
-      .subscribe(
-        (data) => {
-          //console.log(data)
-        },
-        (error) => {
-          //this.serverHealth = -1
-          //console.log(error)
-        },
+      .pipe(
+        takeUntil(this.componentLifecycle$)
+      )
+      .subscribe({complete:
         () => {
-          subscription.unsubscribe();
           this.getDeviceInfo();
-        }
+        }}
       );
   }
 
   forceOff() {
-    const subscription = this.service
+    this.service
       .forceDeviceOffWithIp('192.168.178.78')
-      .subscribe(
-        (data) => {
-          //console.log(data)
-        },
-        (error) => {
-          //this.serverHealth = -1
-          //console.log(error)
-        },
-        () => {
-          subscription.unsubscribe();
-          this.getDeviceInfo();
-        }
+      .pipe(
+        takeUntil(this.componentLifecycle$)
+      )
+      .subscribe({complete:
+          () => {
+            this.getDeviceInfo();
+          }}
       );
   }
 
   forceOn() {
-    const subscription = this.service
+    this.service
       .forceDeviceOnWithIp('192.168.178.78')
-      .subscribe(
-        (data) => {
-          //console.log(data)
-        },
-        (error) => {
-          //this.serverHealth = -1
-          //console.log(error)
-        },
-        () => {
-          subscription.unsubscribe();
-          this.getDeviceInfo();
-        }
+      .pipe(
+        takeUntil(this.componentLifecycle$)
+      )
+      .subscribe({complete:
+          () => {
+            this.getDeviceInfo();
+          }}
       );
   }
 
   getDeviceInfo() {
-    const subscription = this.service
+    this.service
       .getInfoOfDeviceWithIp('192.168.178.78')
-      .subscribe(
-        (data) => {
-          console.log(data);
-          this.deviceStatus = data.device_on ? 1 : -1;
-        },
-        (error) => {},
-        () => {
-          subscription.unsubscribe();
-        }
+      .pipe(
+        takeUntil(this.componentLifecycle$)
+      )
+      .subscribe({complete:
+          () => {
+            this.getDeviceInfo();
+          }}
       );
   }
 }

@@ -7,15 +7,15 @@ import { EnergyService } from './energy.service';
   styleUrls: ['./energy.component.css'],
 })
 export class EnergyComponent implements OnInit {
-  verbrauch: number = 0;
-  generierung: number = 0;
+  verbrauch = 0;
+  generierung = 0;
 
   constructor(private readonly service: EnergyService) {
     this.showEnergyData();
   }
 
   ngOnInit(): void {
-    var intervalId = setInterval(() => {
+    const intervalId = setInterval(() => {
       this.showEnergyData();
     }, 10000);
   }
