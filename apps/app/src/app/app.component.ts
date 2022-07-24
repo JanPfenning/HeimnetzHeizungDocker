@@ -1,14 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AppService } from './app.service';
+import { Subject, takeUntil } from "rxjs";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
-  title = 'app';
-
+export class AppComponent implements OnInit, OnDestroy {
   serverHealth = -1;
   wechselrichterHealth = -1;
   tplinkHealth = -1;
@@ -16,8 +15,9 @@ export class AppComponent {
   sensorHealth = -1;
   brokerHealth = -1;
 
-  constructor(private readonly Service: AppService) {
-    this.healthCheck();
+  private readonly lifecycle$ = new Subject()
+
+  constructor(private readonly appService: AppService) {
   }
 
   healthCheck() {
@@ -31,102 +31,59 @@ export class AppComponent {
 
   showDatabaseStatus() {
     this.databaseHealth = 0;
-    const subscription = this.Service.getDatabaseStatus().subscribe(
-      (data) => {
-        //console.log(`Database: ${data}`)
-        this.databaseHealth = data ? 1 : -1;
-      },
-      (error) => {
-        //this.serverHealth = -1
-        //console.log(error)
-      },
-      () => {
-        subscription.unsubscribe();
-      }
-    );
+    this.appService.getDatabaseStatus()
+      .pipe(takeUntil(this.lifecycle$))
+      .subscribe(
+        (data) => {
+          //console.log(`Database: ${data}`)
+          this.databaseHealth = data ? 1 : -1;
+        });
   }
 
   showApiStatus() {
     this.serverHealth = 0;
-    const subscription = this.Service.getApiStatus().subscribe(
-      (data) => {
-        //console.log(data)
-        this.serverHealth = 1;
-      },
-      (error) => {
-        this.serverHealth = -1;
-        //console.log(error)
-      },
-      () => {
-        subscription.unsubscribe();
-      }
-    );
+    this.appService.getApiStatus()
+      .pipe(takeUntil(this.lifecycle$))
+      .subscribe({
+        next: (data) => this.serverHealth = 1,
+        error: (error) => this.serverHealth = -1
+      })
   }
 
   showWechselrichterStatus() {
     this.wechselrichterHealth = 0;
-    const subscription = this.Service.getWechselrichterStatus().subscribe(
-      (data) => {
-        //console.log(data)
-        this.wechselrichterHealth = data ? 1 : -1;
-      },
-      (error) => {
-        //this.serverHealth = -1
-        //console.log(error)
-      },
-      () => {
-        subscription.unsubscribe();
-      }
-    );
+    this.appService.getWechselrichterStatus()
+      .pipe(takeUntil(this.lifecycle$))
+      .subscribe((data) => this.wechselrichterHealth = data ? 1 : -1);
   }
 
   showTpLinkCloudStatus() {
     this.tplinkHealth = 0;
-    const subscription = this.Service.getTpLinkCloudStatus().subscribe(
-      (data) => {
-        //console.log(data)
-        this.tplinkHealth = data ? 1 : -1;
-      },
-      (error) => {
-        //this.serverHealth = -1
-        //console.log(error)
-      },
-      () => {
-        subscription.unsubscribe();
-      }
-    );
+    this.appService.getTpLinkCloudStatus()
+      .pipe(takeUntil(this.lifecycle$))
+      .subscribe((data) => this.tplinkHealth = data ? 1 : -1);
   }
 
   showSensorStatus() {
     this.sensorHealth = 0;
-    const subscription = this.Service.getSensorStatus().subscribe(
-      (data) => {
-        this.sensorHealth = data ? 1 : -1;
-      },
-      (error) => {
-        //this.serverHealth = -1
-        //console.log(error)
-      },
-      () => {
-        subscription.unsubscribe();
-      }
-    );
+    this.appService.getSensorStatus()
+      .pipe(takeUntil(this.lifecycle$))
+      .subscribe((data) => this.sensorHealth = data ? 1 : -1);
   }
 
   showBrokerStatus() {
     this.brokerHealth = 0;
-    const subscription = this.Service.getBrokerStatus().subscribe(
-      (data) => {
-        //console.log(data)
-        this.brokerHealth = data ? 1 : -1;
-      },
-      (error) => {
-        //this.serverHealth = -1
-        //console.log(error)
-      },
-      () => {
-        subscription.unsubscribe();
-      }
-    );
+    this.appService.getBrokerStatus()
+      .pipe(takeUntil(this.lifecycle$))
+      .subscribe((data) => this.brokerHealth = data ? 1 : -1);
+  }
+
+  ngOnDestroy(): void {
+    this.lifecycle$.next(true);
+    this.lifecycle$.complete()
+  }
+
+  ngOnInit(): void {
+    this.healthCheck();
   }
 }
