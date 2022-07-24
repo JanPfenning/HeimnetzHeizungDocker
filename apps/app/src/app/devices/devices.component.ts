@@ -20,7 +20,6 @@ export class DevicesComponent implements OnInit {
   }
 
   turnOnUntilEnergy() {
-    //console.log("subscribing")
     const subscription = this.service
       .turnDeviceOnUntilOverproductionLessThan('192.168.178.78', 600)
       .subscribe(
