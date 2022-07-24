@@ -6,7 +6,7 @@
 **/dist
 **/tmp
 **/out-tsc
-**/node_modules
+node_modules
 **/.idea
 **/.angular
 **/*.log*

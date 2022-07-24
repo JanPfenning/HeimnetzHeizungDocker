@@ -1,0 +1,61 @@
+<div>
+  <p>Healthcheck:</p>
+  <div id="statusbar">
+    <div class="statuselement">
+      <p>Server</p>
+      <span
+        id="serverHealth"
+        class="dot"
+        [style.background]="
+          serverHealth < 0 ? 'red' : serverHealth > 0 ? 'green' : 'yellow'
+        "
+      ></span>
+    </div>
+    <div class="statuselement">
+      <p>Wechselrichter</p>
+      <span
+        id="wechselrichterHealth"
+        class="dot"
+        [style.background]="
+          wechselrichterHealth < 0
+            ? 'red'
+            : wechselrichterHealth > 0
+            ? 'green'
+            : 'yellow'
+        "
+      ></span>
+    </div>
+    <div class="statuselement">
+      <p>TP-Link-Cloud</p>
+      <span
+        id="tplinkHealth"
+        class="dot"
+        [style.background]="
+          tplinkHealth < 0 ? 'red' : tplinkHealth > 0 ? 'green' : 'yellow'
+        "
+      ></span>
+    </div>
+    <!--
+    <div class="statuselement">
+      <p>Temperatur Sensor</p>
+      <span id="espHealth" class="dot" [style.background]="sensorHealth<0 ? 'red': (sensorHealth>0?'green':'yellow')"></span>
+    </div>
+    <div class="statuselement">
+      <p>Broker</p>
+      <span id="brokerHealth" class="dot" [style.background]="brokerHealth<0 ? 'red': (brokerHealth>0?'green':'yellow')"></span>
+    </div>
+    <div class="statuselement">
+      <p>Database</p>
+      <span id="databaseHealth" class="dot" [style.background]="databaseHealth<0 ? 'red': (databaseHealth>0?'green':'yellow')"></span>
+    </div>
+    -->
+  </div>
+  <div>
+    <button (click)="healthCheck()">Check health</button>
+  </div>
+</div>
+
+<app-devices></app-devices>
+<app-energy></app-energy>
+<!--<app-temperature></app-temperature>-->
+<router-outlet></router-outlet>
