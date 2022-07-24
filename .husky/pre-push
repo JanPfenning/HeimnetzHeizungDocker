@@ -3,7 +3,7 @@
 
 AFFECTED=$(yarn -s nx affected:apps --plain | sed "s#\s#,#g")
 
-if [ AFFECTED ]; then
+if [ $AFFECTED ]; then
   yarn nx run-many --target=lint --projects="${AFFECTED}"
 else
   yarn nx run-many --target=lint --all
