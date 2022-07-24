@@ -11,10 +11,10 @@ export class DevicesComponent implements OnInit {
   deviceStatus = -1;
 
   constructor(readonly service: DevicesService) {
-    this.getDeviceInfo()
   }
 
   ngOnInit(): void {
+    this.getDeviceInfo()
     this.deviceStatus = 0;
     var intervalId = setInterval(() => {
       this.getDeviceInfo()
